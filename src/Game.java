@@ -5,12 +5,13 @@ import java.util.Random;
 public class Game {
     public static void main(String[] args) {
         int humanrocks, botrocks, humanthinks, botthinks, rocksum, humanchoise, botchoise;
-        boolean gameend=false, humanmove=true;
+        boolean gameend=false;
         humanrocks=4;   // по 4 камня, чтобы рандом брал от 0 до 3
         botrocks=4;
         Random r = new Random();
         Console c = System.console();
         do {
+
             boolean correct=false;
             System.out.println();     //чтобы не сливались строки
 
@@ -34,23 +35,25 @@ public class Game {
                 humanthinks = Integer.valueOf(c.readLine());
                 if ((humanthinks<=humanrocks+botrocks-2) & (humanthinks>=0)) correct=true;
                 else {
-                    if (humanthinks>humanrocks+botrocks-2) System.out.println("Moron, how it's possible if there are no so much rocks in the game! Try again: ");
-                    if (humanthinks<0) System.out.println("Are you an idiot? How can it be a negative number?! Try again: ");
+                    if (humanthinks>humanrocks+botrocks-2) System.out.println("It's not possible, there are no so many rocks in the game! Try again: ");
+                    if (humanthinks<0) System.out.println("How can it be a negative number?! Try again: ");
                     continue;
                 }
             }while(correct==false);
 
-            botthinks = botchoise+r.nextInt(humanrocks);
+            do {
+                botthinks = botchoise+r.nextInt(humanrocks);
+            }while(botthinks == humanthinks);  //сверяем с ответом юзера (не самое изящное решение, да)
 
             if (humanthinks==rocksum) {
                 --humanrocks;
-                System.out.println("Yes! You've guessed rocks sum");
+                System.out.println("Yes! You've guessed rocks sum.");
             }
             else if (botthinks==rocksum) {
                 --botrocks;
-                System.out.println("Congrats to the unasp random, bot is right");
+                System.out.println("Hah, bot is right. His answer is: " +botthinks);
                 }
-                    else
+                    else System.out.println("No one guessed");
 
 
             if (humanrocks==1) {
@@ -58,11 +61,11 @@ public class Game {
                 gameend=true;
             }
             if (botrocks==1) {
-                System.out.println("Lol, look at this stupid looser!");
+                System.out.println("Lol, look at this looser!");
                 gameend=true;
             }
 
-        } while(gameend=false);
+        } while(gameend==false);
     }
 
 }
